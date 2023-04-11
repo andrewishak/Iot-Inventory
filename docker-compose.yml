@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: app
+    env_file:
+      - ./.env
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    restart: unless-stopped
+    links:
+      - db
+    working_dir: /app
+    command: sh run.sh
+    volumes:
+      - ./:/app
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      - POSTGRES_DB=inventory
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_USER=postgres
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data: {}

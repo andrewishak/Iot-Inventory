@@ -1,0 +1,1 @@
+insert into devices (id,pin_code, status, temperature)values(1,'1234567','ACTIVE',3);
